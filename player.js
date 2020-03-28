@@ -35,7 +35,7 @@ class Player extends Entity {
 	// Create the object asset
 	create() {
 		this.img = new Image();
-		this.img.src = "player.png";
+		this.img.src = "https://raw.githubusercontent.com/Eviber/islands/master/player.png";
 		this.img.addEventListener(
 			"load",
 			() => {
