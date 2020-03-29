@@ -9,6 +9,7 @@ var Loader = {
 Loader.loadImage = function (key, src) {
     var img = new Image();
 
+	src = "https://raw.githubusercontent.com/Eviber/islands/master/" + src;
     var d = new Promise(function (resolve, reject) {
         img.onload = function () {
             this.images[key] = img;
