@@ -131,10 +131,10 @@ Game._drawLayer = function (layer) {
 				// 0 => empty tile
 				this.ctx.drawImage(
 					this.tileAtlas, // image
-					(tile - 1) * (app.map.tsize / 2), // source x
+					(tile - 1) * app.map.tsize, // source x
 					0, // source y
-					app.map.tsize / 2, // source width
-					app.map.tsize / 2, // source height
+					app.map.tsize, // source width
+					app.map.tsize, // source height
 					Math.round(x), // target x
 					Math.round(y), // target y
 					app.map.tsize, // target width
