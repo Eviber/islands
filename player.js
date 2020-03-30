@@ -6,19 +6,6 @@ class Player extends Entity {
 		//this.speed = 8;
 	}
 
-	coll(newPos) {
-		//if (newPos.x >= 0 && newPos.x < W && newPos.y >= 0 && newPos.y < H) {
-			// TODO true collision check
-			this.off = {
-				x: newPos.x - this.pos.x,
-				y: newPos.y - this.pos.y,
-				t: 0
-			}
-			this.pos = newPos;
-			this.moving = true;
-		//}
-	}
-
 	move(dt) {
 		if (!this.moving) {
 			let newPos = Object.assign({}, this.pos);
@@ -34,17 +21,19 @@ class Player extends Entity {
 			}
 
 			if (newPos.x !== this.pos.x || newPos.y !== this.pos.y)
-				this.coll(newPos);
+				super.coll(newPos);
 		}
 		if (this.moving) {
 			this.off.t += dt;
-			let newOff = map.tsize - (map.tsize * (this.off.t / 0.2))
+			let newOff = app.map.tsize - (app.map.tsize * (this.off.t / 0.2))
 			if (this.off.x !== 0)
 				this.off.x = (this.off.x > 0) ? newOff : -newOff;
 			if (this.off.y !== 0)
 				this.off.y = (this.off.y > 0) ? newOff : -newOff;
-			if (this.off.t >= 0.2)
+			if (this.off.t >= 0.2) {
 				this.moving = false;
+				this.off = {x:0,y:0,t:0};
+			}
 		}
 	}
 
