@@ -1,3 +1,12 @@
+class Entities {
+	constructor() {
+		this.entries = [];
+	}
+	add(e) {
+		this.entries.push(e);
+	}
+}
+
 class Entity {
 	constructor(x, y) {
 		this.pos = {
@@ -13,6 +22,24 @@ class Entity {
 			y: 0,
 			t: 0
 		}
+		app.entities.add(this);
+	}
+
+	coll(newPos) {
+		for (let e of app.entities.entries) {
+			if (e.pos.x === newPos.x && e.pos.y === newPos.y)
+				return ;
+		}
+		if (app.map.isFree(newPos.x, newPos.y)) {
+			// TODO true collision check
+			this.off = {
+				x: newPos.x - this.pos.x,
+				y: newPos.y - this.pos.y,
+				t: 0
+			}
+			this.pos = newPos;
+			this.moving = true;
+		}
 	}
 
 	update() {
@@ -22,8 +49,8 @@ class Entity {
 	render(ctx, camera) {
 		if (this.loaded && camera.inBounds(this.pos))
 			ctx.drawImage(this.img,
-				this.pos.x * map.tsize - camera.x - this.off.x,
-				this.pos.y * map.tsize - camera.y - this.off.y
+				this.pos.x * app.map.tsize - camera.x - this.off.x,
+				this.pos.y * app.map.tsize - camera.y - this.off.y
 			);
 	}
 };
