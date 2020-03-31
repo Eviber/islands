@@ -7,30 +7,30 @@ var app = {
 		tsize: 64,
 		layers: [[
 			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-			3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-			3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-			3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-			3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-			3, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 3,
-			3, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 3,
-			3, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 3,
-			3, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3,
-			3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3,
-			3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3,
-			3, 3, 3, 1, 1, 2, 3, 3, 3, 3, 3, 3
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 3, 3
 		], [
-			4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-			4, 4, 4, 0, 5, 4, 4, 4, 4, 4, 4, 4,
-			4, 4, 4, 0, 0, 3, 3, 3, 3, 3, 3, 3
+			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			1, 1, 1, 0, 2, 1, 1, 1, 1, 1, 1, 1,
+			1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1
 		]],
 		getTile: function (layer, col, row) {
 			if (0 <= col && col < this.cols)
@@ -79,7 +79,7 @@ Camera.prototype.move = function (delta, dirx, diry) {
 };
 
 Game.load = function () {
-	return [Loader.loadImage("tiles", "tileset.png")];
+	return [Loader.loadImage("tiles", "assets/tileset.png")];
 };
 
 Game.init = function () {
@@ -127,11 +127,23 @@ Game._drawLayer = function (layer) {
 			var tile = app.map.getTile(layer, c, r);
 			var x = (c - startCol) * app.map.tsize + offsetX;
 			var y = (r - startRow) * app.map.tsize + offsetY;
-			if (tile !== 0) {
+			if (tile !== 0 && tile !== undefined) {
 				// 0 => empty tile
 				this.ctx.drawImage(
 					this.tileAtlas, // image
 					(tile - 1) * app.map.tsize, // source x
+					layer * app.map.tsize, // source y
+					app.map.tsize, // source width
+					app.map.tsize, // source height
+					Math.round(x), // target x
+					Math.round(y), // target y
+					app.map.tsize, // target width
+					app.map.tsize // target height
+				);
+			} else if (layer === 0) {
+				this.ctx.drawImage(
+					this.tileAtlas, // image
+					0, // source x
 					0, // source y
 					app.map.tsize, // source width
 					app.map.tsize, // source height
