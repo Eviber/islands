@@ -4,7 +4,7 @@ var app = {
 	map: {
 		cols: 12,
 		rows: 12,
-		tsize: 64,
+		tsize: 32,
 		layers: [[
 			3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 			3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3,
@@ -39,6 +39,29 @@ var app = {
 		isFree: function (col, row) {
 			return this.layers[1][row * app.map.cols + col] === 0;
 		}
+	},
+	rotateAndPaintImage: function (context, image, dir, x, y, w, h) {
+		let angleInRad;
+
+		switch (dir) {
+			case "left":
+				angleInRad = Math.PI * 0.5;
+				break;
+			case "down":
+				angleInRad = Math.PI;
+				break;
+			case "right":
+				angleInRad = -Math.PI * 0.5;
+				break;
+			default:
+				angleInRad = 0;
+				break;
+		}
+		context.translate(x + 16, y + 16);
+		context.rotate(-angleInRad);
+		context.drawImage(image, -16, -16, w, h);
+		context.rotate(angleInRad);
+		context.translate(-x - 16, -y - 16);
 	}
 };
 
@@ -66,7 +89,7 @@ Camera.prototype.inBounds = function (pos) {
 
 Camera.prototype.centerOn = function (entity) {
 	this.x = entity.pos.x * app.map.tsize - this.width / 2 - entity.off.x;
-	this.y = entity.pos.y * app.map.tsize - this.width / 2 - entity.off.y;
+	this.y = entity.pos.y * app.map.tsize - this.height / 2 - entity.off.y;
 };
 
 Camera.prototype.move = function (delta, dirx, diry) {
@@ -90,19 +113,13 @@ Game.init = function () {
 		Keyboard.DOWN
 	]);
 	this.tileAtlas = Loader.getImage("tiles");
-	this.camera = new Camera(app.map, 512, 512);
-	this.player = new Player(8, 8);
-	this.tempEntity = new Entity(7, 7);
-
-	this.tempEntity.img = new Image();
-	this.tempEntity.img.src = "assets/player.png";
-	this.tempEntity.img.addEventListener(
-		"load",
-		() => {
-			this.tempEntity.loaded = true;
-		},
-		false
+	this.camera = new Camera(
+		app.map,
+		app.ctx.canvas.clientWidth,
+		app.ctx.canvas.clientHeight
 	);
+	this.player = new Player(8, 8);
+	new Rock(7, 7);
 };
 
 Game.update = function (delta) {
@@ -131,10 +148,10 @@ Game._drawLayer = function (layer) {
 				// 0 => empty tile
 				this.ctx.drawImage(
 					this.tileAtlas, // image
-					(tile - 1) * app.map.tsize, // source x
-					layer * app.map.tsize, // source y
-					app.map.tsize, // source width
-					app.map.tsize, // source height
+					(tile - 1) * app.map.tsize * 2, // source x
+					layer * app.map.tsize * 2, // source y
+					app.map.tsize * 2, // source width
+					app.map.tsize * 2, // source height
 					Math.round(x), // target x
 					Math.round(y), // target y
 					app.map.tsize, // target width
@@ -145,8 +162,8 @@ Game._drawLayer = function (layer) {
 					this.tileAtlas, // image
 					0, // source x
 					0, // source y
-					app.map.tsize, // source width
-					app.map.tsize, // source height
+					app.map.tsize * 2, // source width
+					app.map.tsize * 2, // source height
 					Math.round(x), // target x
 					Math.round(y), // target y
 					app.map.tsize, // target width
@@ -160,8 +177,10 @@ Game._drawLayer = function (layer) {
 Game.render = function () {
 	// draw map background layer
 	this._drawLayer(0);
-	this.player.render(this.ctx, this.camera);
-	this.tempEntity.render(this.ctx, this.camera);
+	for (e of app.entities.entries) {
+		if (e !== this.player) e.render(app.ctx, this.camera);
+	}
+	this.player.render(app.ctx, this.camera);
 	// draw map top layer
 	this._drawLayer(1);
 };

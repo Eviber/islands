@@ -81,6 +81,7 @@ var Game = {};
 
 Game.run = function (context) {
     this.ctx = context;
+	app.ctx = context;
     this._previousElapsed = 0;
 
     var p = this.load();
@@ -94,7 +95,7 @@ Game.tick = function (elapsed) {
     window.requestAnimationFrame(this.tick);
 
     // clear previous frame
-    this.ctx.clearRect(0, 0, 512, 512);
+    this.ctx.clearRect(0, 0, app.ctx.canvas.clientWidth, app.ctx.canvas.clientHeight);
 
     // compute delta time in seconds -- also cap it
     var delta = (elapsed - this._previousElapsed) / 1000.0;

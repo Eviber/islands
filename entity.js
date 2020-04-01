@@ -17,6 +17,8 @@ class Entity {
 		this.height = 0;
 		this.img = null;
 		this.loaded = false;
+		this.doColl = false;
+		this.dir = 'up';
 		this.off = {
 			x: 0,
 			y: 0,
@@ -27,7 +29,7 @@ class Entity {
 
 	coll(newPos) {
 		for (let e of app.entities.entries) {
-			if (e.pos.x === newPos.x && e.pos.y === newPos.y)
+			if (e.pos.x === newPos.x && e.pos.y === newPos.y && e.doColl)
 				return ;
 		}
 		if (app.map.isFree(newPos.x, newPos.y)) {
@@ -38,19 +40,21 @@ class Entity {
 				t: 0
 			}
 			this.pos = newPos;
-			this.moving = true;
+			this.canmove = false;
 		}
 	}
 
 	update() {
-		if (!this.moving) this.move();
+		if (this.canmove) this.move();
 	}
 
 	render(ctx, camera) {
-		if (this.loaded && camera.inBounds(this.pos))
-			ctx.drawImage(this.img,
-				this.pos.x * app.map.tsize - camera.x - this.off.x,
-				this.pos.y * app.map.tsize - camera.y - this.off.y
-			);
+		if (this.loaded && camera.inBounds(this.pos)) {
+			let x = this.pos.x * app.map.tsize - camera.x - this.off.x;
+			let y = this.pos.y * app.map.tsize - camera.y - this.off.y;
+			let w = 32;
+			let h = 32;
+			app.rotateAndPaintImage(app.ctx, this.img, this.dir, x, y, w, h);
+		}
 	}
 };
