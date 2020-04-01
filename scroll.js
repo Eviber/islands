@@ -110,7 +110,9 @@ Game.init = function () {
 		Keyboard.LEFT,
 		Keyboard.RIGHT,
 		Keyboard.UP,
-		Keyboard.DOWN
+		Keyboard.DOWN,
+		Keyboard.INTERACT,
+		Keyboard.PLANT,
 	]);
 	this.tileAtlas = Loader.getImage("tiles");
 	this.camera = new Camera(
@@ -119,7 +121,8 @@ Game.init = function () {
 		app.ctx.canvas.clientHeight
 	);
 	this.player = new Player(8, 8);
-	new Rock(7, 7);
+	let r = new Rock(7, 7);
+	r.name = "the Rock";
 };
 
 Game.update = function (delta) {

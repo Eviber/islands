@@ -6,6 +6,10 @@ class Rock extends Entity {
 		//this.speed = 8;
 	}
 
+	interact(actor) {
+		actor.addToInventory(this);
+	}
+
 	// Create the object asset
 	create() {
 		this.img = new Image();

@@ -3,11 +3,36 @@ class Player extends Entity {
 		super(x, y);
 		this.canmove = true;
 		this.create();
+		this.inventory = [];
 		//this.speed = 8;
+	}
+
+	addToInventory(item) {
+		this.inventory.push(item);
+		item.pos = undefined;
+	}
+
+	act() {
+		let newPos = Object.assign({}, this.pos);
+		if (this.dir === 'up')
+			newPos.y--;
+		if (this.dir === 'down')
+			newPos.y++;
+		if (this.dir === 'left')
+			newPos.x--;
+		if (this.dir === 'right')
+			newPos.x++;
+		for (let e of app.entities.entries) {
+			if (e.pos && e.pos.x === newPos.x && e.pos.y === newPos.y)
+				e.interact(this);
+		}
 	}
 
 	move(dt) {
 		if (this.canmove) {
+			if (Keyboard.isDown(Keyboard.INTERACT)) {
+				this.act();
+			}
 			let newPos = Object.assign({}, this.pos);
 
 			if (Keyboard.isDown(Keyboard.UP)) {
@@ -19,7 +44,7 @@ class Player extends Entity {
 			} else if (Keyboard.isDown(Keyboard.LEFT)) {
 				newPos.x--;
 				this.dir = "left";
-			} else if (Keyboard.isDown(Keyboard.RIGHT)) { 
+			} else if (Keyboard.isDown(Keyboard.RIGHT)) {
 				newPos.x++;
 				this.dir = "right";
 			}
