@@ -2,6 +2,7 @@ class Player extends Entity {
 	constructor(x, y) {
 		super(x, y);
 		this.canmove = true;
+		this.moving = false;
 		this.create();
 		this.inventory = [];
 		//this.speed = 8;
@@ -36,21 +37,36 @@ class Player extends Entity {
 			let newPos = Object.assign({}, this.pos);
 
 			if (Keyboard.isDown(Keyboard.UP)) {
-				newPos.y--;
-				this.dir = "up";
+				if (this.dir !== 'up') {
+					this.dir = "up";
+					this.canmove = this.moving;
+				} else
+					newPos.y--;
 			} else if (Keyboard.isDown(Keyboard.DOWN)) {
-				newPos.y++;
-				this.dir = "down";
+				if (this.dir !== "down") {
+					this.dir = "down";
+					this.canmove = this.moving;
+				} else
+					newPos.y++;
 			} else if (Keyboard.isDown(Keyboard.LEFT)) {
-				newPos.x--;
-				this.dir = "left";
+				if (this.dir !== "left") {
+					this.dir = "left";
+					this.canmove = this.moving;
+				} else
+					newPos.x--;
 			} else if (Keyboard.isDown(Keyboard.RIGHT)) {
-				newPos.x++;
-				this.dir = "right";
+				if (this.dir !== "right") {
+					this.dir = "right";
+					this.canmove = this.moving;
+				} else
+					newPos.x++;
 			}
 
-			if (newPos.x !== this.pos.x || newPos.y !== this.pos.y)
+			this.moving = false;
+			if (newPos.x !== this.pos.x || newPos.y !== this.pos.y) {
+				this.moving = true;
 				super.coll(newPos);
+			}
 		}
 		if (!this.canmove) {
 			this.off.t += dt;
