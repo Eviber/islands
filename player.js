@@ -36,17 +36,29 @@ class Player extends Entity {
 			let newPos = Object.assign({}, this.pos);
 
 			if (Keyboard.isDown(Keyboard.UP)) {
-				newPos.y--;
-				this.dir = "up";
+				if (this.dir !== 'up') {
+					this.dir = "up";
+					this.canmove = false;
+				} else
+					newPos.y--;
 			} else if (Keyboard.isDown(Keyboard.DOWN)) {
-				newPos.y++;
-				this.dir = "down";
+				if (this.dir !== "down") {
+					this.dir = "down";
+					this.canmove = false;
+				} else
+					newPos.y++;
 			} else if (Keyboard.isDown(Keyboard.LEFT)) {
-				newPos.x--;
-				this.dir = "left";
+				if (this.dir !== "left") {
+					this.dir = "left";
+					this.canmove = false;
+				} else
+					newPos.x--;
 			} else if (Keyboard.isDown(Keyboard.RIGHT)) {
-				newPos.x++;
-				this.dir = "right";
+				if (this.dir !== "right") {
+					this.dir = "right";
+					this.canmove = false;
+				} else
+					newPos.x++;
 			}
 
 			if (newPos.x !== this.pos.x || newPos.y !== this.pos.y)
