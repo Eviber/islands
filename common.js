@@ -36,13 +36,13 @@ Loader.getImage = function (key) {
 
 var Keyboard = {};
 
-Keyboard.LEFT = 37;
-Keyboard.RIGHT = 39;
-Keyboard.UP = 38;
-Keyboard.DOWN = 40;
-Keyboard.INTERACT = 32;
-Keyboard.INVENTORY = 73;
-Keyboard.PLANT = 80;
+Keyboard.LEFT = "ArrowLeft";
+Keyboard.RIGHT = "ArrowRight";
+Keyboard.UP = "ArrowUp";
+Keyboard.DOWN = "ArrowDown";
+Keyboard.INTERACT = "Space";
+Keyboard.INVENTORY = "KeyI";
+Keyboard.PLANT = "KeyP";
 
 Keyboard._keys = {};
 
@@ -58,26 +58,26 @@ Keyboard.listenForEvents = function (keys) {
 };
 
 Keyboard._onKeyDown = function (event) {
-	var keyCode = event.keyCode;
-	if (keyCode in this._keys) {
+	var code = event.code;
+	if (code in this._keys) {
 		event.preventDefault();
-		this._keys[keyCode] = true;
+		this._keys[code] = true;
 	}
 };
 
 Keyboard._onKeyUp = function (event) {
-	var keyCode = event.keyCode;
-	if (keyCode in this._keys) {
+	var code = event.code;
+	if (code in this._keys) {
 		event.preventDefault();
-		this._keys[keyCode] = false;
+		this._keys[code] = false;
 	}
 };
 
-Keyboard.isDown = function (keyCode) {
-	if (!keyCode in this._keys) {
-		throw new Error("Keycode " + keyCode + " is not being listened to");
+Keyboard.isDown = function (code) {
+	if (!code in this._keys) {
+		throw new Error("code " + code + " is not being listened to");
 	}
-	return this._keys[keyCode];
+	return this._keys[code];
 };
 
 //

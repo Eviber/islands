@@ -177,6 +177,11 @@ Game._drawLayer = function (layer) {
 	}
 };
 
+Game.drawInventory = function (entity) {
+	app.ctx.fillStyle = "#fff";
+	app.ctx.fillRect(0, 0, canvas.width/4, canvas.height*3/4);
+}
+
 Game.render = function () {
 	// draw map background layer
 	this._drawLayer(0);
@@ -186,4 +191,6 @@ Game.render = function () {
 	this.player.render(app.ctx, this.camera);
 	// draw map top layer
 	this._drawLayer(1);
+	if (this.player.inventoryOpen)
+		this.drawInventory(this.player);
 };

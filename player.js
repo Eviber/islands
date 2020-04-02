@@ -5,7 +5,7 @@ class Player extends Entity {
 		this.moving = false;
 		this.create();
 		this.inventory = [];
-		//this.speed = 8;
+		this.inventoryOpen = false;
 	}
 
 	addToInventory(item) {
@@ -30,6 +30,9 @@ class Player extends Entity {
 	}
 
 	move(dt) {
+		if (Keyboard.isDown(Keyboard.INVENTORY)) {
+			this.inventoryOpen = true;
+		}
 		if (this.canmove) {
 			if (Keyboard.isDown(Keyboard.INTERACT)) {
 				this.act();
