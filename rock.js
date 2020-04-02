@@ -3,6 +3,7 @@ class Rock extends Entity {
 		super(x, y);
 		this.canmove = false;
 		this.create();
+		this.doColl = false;
 		//this.speed = 8;
 	}
 
