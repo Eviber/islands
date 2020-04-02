@@ -4,13 +4,17 @@ class Player extends Entity {
 		this.canmove = true;
 		this.moving = false;
 		this.create();
-		this.inventory = [];
-		this.inventoryOpen = false;
+		this.inventory = new Inventory();
+		window.addEventListener("keydown", this.keydown.bind(this));
 	}
 
-	addToInventory(item) {
-		this.inventory.push(item);
-		item.pos = undefined;
+	keydown(event) {
+		if (event.code === "KeyI") {
+			if (this.inventory.visible)
+				this.inventory.close();
+			else
+				this.inventory.open();
+		}
 	}
 
 	act() {
@@ -29,10 +33,12 @@ class Player extends Entity {
 		}
 	}
 
+	update(dt) {
+		if (!this.inventory.visible)
+			this.move(dt);
+	}
+
 	move(dt) {
-		if (Keyboard.isDown(Keyboard.INVENTORY)) {
-			this.inventoryOpen = true;
-		}
 		if (this.canmove) {
 			if (Keyboard.isDown(Keyboard.INTERACT)) {
 				this.act();

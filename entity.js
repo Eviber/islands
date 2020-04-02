@@ -20,6 +20,7 @@ class Entity {
 		this.loaded = false;
 		this.doColl = false;
 		this.dir = "up";
+		this.name = "Unnamed entity";
 		this.off = {
 			x: 0,
 			y: 0,
@@ -55,10 +56,8 @@ class Entity {
 		console.log("interacted!");
 	}
 
-	addToInventory(item) {}
-
-	update() {
-		this.move();
+	update(dt) {
+		this.move(dt);
 	}
 
 	render(ctx, camera) {

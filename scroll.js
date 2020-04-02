@@ -113,6 +113,7 @@ Game.init = function () {
 		Keyboard.DOWN,
 		Keyboard.INTERACT,
 		Keyboard.PLANT,
+		Keyboard.INVENTORY,
 	]);
 	this.tileAtlas = Loader.getImage("tiles");
 	this.camera = new Camera(
@@ -121,8 +122,9 @@ Game.init = function () {
 		app.ctx.canvas.clientHeight
 	);
 	this.player = new Player(8, 8);
-	let r = new Rock(7, 7);
-	r.name = "the Rock";
+	new Rock(7, 7);
+	new Rock(2, 3);
+	new Rock(4, 6);
 };
 
 Game.update = function (delta) {
@@ -130,7 +132,9 @@ Game.update = function (delta) {
 	var dirx = 0;
 	var diry = 0;
 
-	this.player.move(delta);
+	for (e of app.entities.entries) {
+		e.update(delta);
+	}
 	this.camera.centerOn(this.player);
 };
 
@@ -178,8 +182,20 @@ Game._drawLayer = function (layer) {
 };
 
 Game.drawInventory = function (entity) {
-	app.ctx.fillStyle = "#fff";
-	app.ctx.fillRect(0, 0, canvas.width/4, canvas.height*3/4);
+	let inv = entity.inventory;
+	app.ctx.fillStyle = "#ffffff99";
+	app.ctx.fillRect(0, 0, app.ctx.canvas.clientWidth/4, app.ctx.canvas.clientHeight*3/4);
+	app.ctx.fillStyle = "#000";
+	app.ctx.textBaseline = "top";
+	app.ctx.font = "18px Arial";
+	let x = 20;
+	let y = 20;
+	for (item of inv.entries) {
+		if (inv.entries[inv.cursor] === item)
+			app.ctx.fillText('-', 0, y, app.ctx.canvas.clientWidth/4);
+		app.ctx.fillText(item.name, x, y, app.ctx.canvas.clientWidth/4);
+		y += 20;
+	}
 }
 
 Game.render = function () {
@@ -191,6 +207,6 @@ Game.render = function () {
 	this.player.render(app.ctx, this.camera);
 	// draw map top layer
 	this._drawLayer(1);
-	if (this.player.inventoryOpen)
+	if (this.player.inventory.visible)
 		this.drawInventory(this.player);
 };

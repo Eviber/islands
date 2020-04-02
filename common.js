@@ -60,7 +60,8 @@ Keyboard.listenForEvents = function (keys) {
 Keyboard._onKeyDown = function (event) {
 	var code = event.code;
 	if (code in this._keys) {
-		event.preventDefault();
+		if (code !== 'KeyI')
+			event.preventDefault();
 		this._keys[code] = true;
 	}
 };

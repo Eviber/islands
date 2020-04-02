@@ -4,11 +4,13 @@ class Rock extends Entity {
 		this.canmove = false;
 		this.create();
 		this.doColl = false;
+		this.name = "rock";
 		//this.speed = 8;
 	}
 
 	interact(actor) {
-		actor.addToInventory(this);
+		actor.inventory.add(this);
+		this.pos = undefined;
 	}
 
 	// Create the object asset
