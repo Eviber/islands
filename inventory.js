@@ -20,8 +20,8 @@ class Inventory {
 			let item = this.remove();
 			if (item) {
 				item.plant({
-					x: Game.player.pos.x + 1,
-					y: Game.player.pos.y
+					x: Game.player.nextPos.x,
+					y: Game.player.nextPos.y
 				});
 			}
 			//let actions = this.entries[this.cursor].getInvActions();

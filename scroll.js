@@ -1,4 +1,5 @@
 var app = {
+	time: 0,
 	entities: new Entities(),
 	// prettier-ignore
 	map: {
@@ -40,9 +41,11 @@ var app = {
 			return this.layers[1][row * app.map.cols + col] === 0;
 		}
 	},
-	rotateAndPaintImage: function (context, image, dir, x, y, w, h) {
+	rotateAndPaintImage: function (context, image, dir, x, y, w, h, ofx, ofy) {
 		let angleInRad;
 
+		ofx = (ofx !== undefined) ? ofx : 0;
+		ofy = (ofy !== undefined) ? ofy : 0;
 		switch (dir) {
 			case "left":
 				angleInRad = Math.PI * 0.5;
@@ -59,7 +62,7 @@ var app = {
 		}
 		context.translate(x + 16, y + 16);
 		context.rotate(-angleInRad);
-		context.drawImage(image, 0, 0, w, h, -16, -16, w, h);
+		context.drawImage(image, ofx, ofy, w, h, -16, -16, w, h);
 		context.rotate(angleInRad);
 		context.translate(-x - 16, -y - 16);
 	}
@@ -105,7 +108,19 @@ Game.load = function () {
 	return [Loader.loadImage("tiles", "assets/tileset.png")];
 };
 
+Game.addTick = function () {
+	app.time++;
+	for (e of app.entities.entries) {
+		e.tick(app.time);
+	}
+}
+
 Game.init = function () {
+	window.addEventListener("keydown", e => {
+		if (e.code === "KeyT") {
+			Game.addTick();
+		}
+	});
 	Keyboard.listenForEvents([
 		Keyboard.LEFT,
 		Keyboard.RIGHT,
@@ -113,7 +128,7 @@ Game.init = function () {
 		Keyboard.DOWN,
 		Keyboard.INTERACT,
 		Keyboard.PLANT,
-		Keyboard.INVENTORY,
+		Keyboard.INVENTORY
 	]);
 	this.tileAtlas = Loader.getImage("tiles");
 	this.camera = new Camera(
@@ -184,7 +199,12 @@ Game._drawLayer = function (layer) {
 Game.drawInventory = function (entity) {
 	let inv = entity.inventory;
 	app.ctx.fillStyle = "#ffffff99";
-	app.ctx.fillRect(0, 0, app.ctx.canvas.clientWidth/4, app.ctx.canvas.clientHeight*3/4);
+	app.ctx.fillRect(
+		0,
+		0,
+		app.ctx.canvas.clientWidth / 4,
+		(app.ctx.canvas.clientHeight * 3) / 4
+	);
 	app.ctx.fillStyle = "#000";
 	app.ctx.textBaseline = "top";
 	app.ctx.font = "18px Arial";
@@ -192,11 +212,11 @@ Game.drawInventory = function (entity) {
 	let y = 20;
 	for (item of inv.entries) {
 		if (inv.entries[inv.cursor] === item)
-			app.ctx.fillText('-', 0, y, app.ctx.canvas.clientWidth/4);
-		app.ctx.fillText(item.name, x, y, app.ctx.canvas.clientWidth/4);
+			app.ctx.fillText("-", 0, y, app.ctx.canvas.clientWidth / 4);
+		app.ctx.fillText(item.name, x, y, app.ctx.canvas.clientWidth / 4);
 		y += 20;
 	}
-}
+};
 
 Game.render = function () {
 	// draw map background layer
@@ -207,6 +227,5 @@ Game.render = function () {
 	this.player.render(app.ctx, this.camera);
 	// draw map top layer
 	this._drawLayer(1);
-	if (this.player.inventory.visible)
-		this.drawInventory(this.player);
+	if (this.player.inventory.visible) this.drawInventory(this.player);
 };

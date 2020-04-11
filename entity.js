@@ -5,6 +5,9 @@ class Entities {
 	add(e) {
 		this.entries.push(e);
 	}
+	delete(entity) {
+		this.entries = this.entries.filter(e => e !== entity);
+	}
 }
 
 class Entity {
@@ -39,7 +42,7 @@ class Entity {
 				e.pos.y === newPos.y &&
 				e.doColl
 			)
-				return;
+				return false;
 		}
 		if (app.map.isFree(newPos.x, newPos.y)) {
 			this.off = {
@@ -47,9 +50,9 @@ class Entity {
 				y: newPos.y - this.pos.y,
 				t: 0
 			};
-			this.pos = newPos;
-			this.canmove = false;
+			return true;
 		}
+		return false;
 	}
 
 	move() {}
@@ -62,13 +65,25 @@ class Entity {
 		this.move(dt);
 	}
 
+	tick(time) {}
+
 	render(ctx, camera) {
 		if (this.loaded && this.pos && camera.inBounds(this.pos)) {
 			let x = this.pos.x * app.map.tsize - camera.x - this.off.x;
 			let y = this.pos.y * app.map.tsize - camera.y - this.off.y;
 			let w = 32;
 			let h = 32;
-			app.rotateAndPaintImage(app.ctx, this.img, this.dir, x, y, w, h);
+			app.rotateAndPaintImage(
+				app.ctx,
+				this.img,
+				this.dir,
+				x,
+				y,
+				w,
+				h,
+				this.ofx,
+				this.ofy
+			);
 		}
 	}
 }
