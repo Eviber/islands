@@ -1,22 +1,19 @@
-class Rock extends Entity {
+class Tree extends Entity {
 	constructor(x, y) {
 		super(x, y);
 		this.canmove = false;
 		this.create();
-		this.doColl = false;
-		this.name = "rock";
-		//this.speed = 8;
+		this.doColl = true;
+		this.name = "tree";
 	}
 
 	interact(actor) {
-		actor.inventory.add(this);
-		this.pos = undefined;
+		;
 	}
 
-	// Create the object asset
 	create() {
 		this.img = new Image();
-		this.img.src = "assets/rock.png";
+		this.img.src = "assets/tree.png";
 		this.img.addEventListener(
 			"load",
 			() => {

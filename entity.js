@@ -21,6 +21,8 @@ class Entity {
 		this.doColl = false;
 		this.dir = "up";
 		this.name = "Unnamed entity";
+		this.throwable = true;
+		this.plantable = false;
 		this.off = {
 			x: 0,
 			y: 0,

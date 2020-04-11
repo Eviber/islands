@@ -12,20 +12,30 @@ class Inventory {
 
 	remove() {
 		if (this.entries.length > 0)
-			this.entries.splice(this.cursor, 1);
+			return this.entries.splice(this.cursor, 1)[0];
 	}
 
 	_update(event) {
+		if (event.code === "Enter") {
+			let item = this.remove();
+			if (item) {
+				item.plant({
+					x: Game.player.pos.x + 1,
+					y: Game.player.pos.y
+				});
+			}
+			//let actions = this.entries[this.cursor].getInvActions();
+			//if (actions === undefined)
+			//actions = [];
+		}
 		if (event.code === "ArrowUp") {
 			this.cursor--;
 		}
 		if (event.code === "ArrowDown") {
 			this.cursor++;
 		}
-		if (this.cursor < 0)
-			this.cursor = this.entries.length-1;
-		if (this.cursor >= this.entries.length)
-			this.cursor = 0;
+		if (this.cursor < 0) this.cursor = this.entries.length - 1;
+		if (this.cursor >= this.entries.length) this.cursor = 0;
 	}
 
 	open() {

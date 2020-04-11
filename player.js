@@ -9,8 +9,8 @@ class Player extends Entity {
 	}
 
 	keydown(event) {
-		if (event.code === "KeyI") {
-			if (this.inventory.visible)
+		if (event.code === "Escape" || event.code === "KeyI") {
+			if (this.inventory.visible || event.code === "Escape")
 				this.inventory.close();
 			else
 				this.inventory.open();
