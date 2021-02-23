@@ -116,11 +116,7 @@ Game.addTick = function () {
 }
 
 Game.init = function () {
-	window.addEventListener("keydown", e => {
-		if (e.code === "KeyT") {
-			Game.addTick();
-		}
-	});
+	window.setInterval(Game.addTick, 1000);
 	Keyboard.listenForEvents([
 		Keyboard.LEFT,
 		Keyboard.RIGHT,
