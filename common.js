@@ -3,31 +3,31 @@
 //
 
 var Loader = {
-	images: {}
+  images: {},
 };
 
 Loader.loadImage = function (key, src) {
-	var img = new Image();
+  var img = new Image();
 
-	var d = new Promise(
-		function (resolve, reject) {
-			img.onload = function () {
-				this.images[key] = img;
-				resolve(img);
-			}.bind(this);
+  var d = new Promise(
+    function (resolve, reject) {
+      img.onload = function () {
+        this.images[key] = img;
+        resolve(img);
+      }.bind(this);
 
-			img.onerror = function () {
-				reject("Could not load image: " + src);
-			};
-		}.bind(this)
-	);
+      img.onerror = function () {
+        reject("Could not load image: " + src);
+      };
+    }.bind(this)
+  );
 
-	img.src = src;
-	return d;
+  img.src = src;
+  return d;
 };
 
 Loader.getImage = function (key) {
-	return key in this.images ? this.images[key] : null;
+  return key in this.images ? this.images[key] : null;
 };
 
 //
@@ -47,38 +47,37 @@ Keyboard.PLANT = "KeyP";
 Keyboard._keys = {};
 
 Keyboard.listenForEvents = function (keys) {
-	window.addEventListener("keydown", this._onKeyDown.bind(this));
-	window.addEventListener("keyup", this._onKeyUp.bind(this));
+  window.addEventListener("keydown", this._onKeyDown.bind(this));
+  window.addEventListener("keyup", this._onKeyUp.bind(this));
 
-	keys.forEach(
-		function (key) {
-			this._keys[key] = false;
-		}.bind(this)
-	);
+  keys.forEach(
+    function (key) {
+      this._keys[key] = false;
+    }.bind(this)
+  );
 };
 
 Keyboard._onKeyDown = function (event) {
-	var code = event.code;
-	if (code in this._keys) {
-		if (code !== 'KeyI')
-			event.preventDefault();
-		this._keys[code] = true;
-	}
+  var code = event.code;
+  if (code in this._keys) {
+    if (code !== "KeyI") event.preventDefault();
+    this._keys[code] = true;
+  }
 };
 
 Keyboard._onKeyUp = function (event) {
-	var code = event.code;
-	if (code in this._keys) {
-		event.preventDefault();
-		this._keys[code] = false;
-	}
+  var code = event.code;
+  if (code in this._keys) {
+    event.preventDefault();
+    this._keys[code] = false;
+  }
 };
 
 Keyboard.isDown = function (code) {
-	if (!code in this._keys) {
-		throw new Error("code " + code + " is not being listened to");
-	}
-	return this._keys[code];
+  if (!code in this._keys) {
+    throw new Error("code " + code + " is not being listened to");
+  }
+  return this._keys[code];
 };
 
 //
@@ -88,37 +87,37 @@ Keyboard.isDown = function (code) {
 var Game = {};
 
 Game.run = function (context) {
-	this.ctx = context;
-	app.ctx = context;
-	this._previousElapsed = 0;
+  this.ctx = context;
+  app.ctx = context;
+  this._previousElapsed = 0;
 
-	var p = this.load();
-	Promise.all(p).then(
-		function (loaded) {
-			this.init();
-			window.requestAnimationFrame(this.tick);
-		}.bind(this)
-	);
+  var p = this.load();
+  Promise.all(p).then(
+    function (loaded) {
+      this.init();
+      window.requestAnimationFrame(this.tick);
+    }.bind(this)
+  );
 };
 
 Game.tick = function (elapsed) {
-	window.requestAnimationFrame(this.tick);
+  window.requestAnimationFrame(this.tick);
 
-	// clear previous frame
-	this.ctx.clearRect(
-		0,
-		0,
-		app.ctx.canvas.clientWidth,
-		app.ctx.canvas.clientHeight
-	);
+  // clear previous frame
+  this.ctx.clearRect(
+    0,
+    0,
+    app.ctx.canvas.clientWidth,
+    app.ctx.canvas.clientHeight
+  );
 
-	// compute delta time in seconds -- also cap it
-	var delta = (elapsed - this._previousElapsed) / 1000.0;
-	delta = Math.min(delta, 0.25); // maximum delta of 250 ms
-	this._previousElapsed = elapsed;
+  // compute delta time in seconds -- also cap it
+  var delta = (elapsed - this._previousElapsed) / 1000.0;
+  delta = Math.min(delta, 0.25); // maximum delta of 250 ms
+  this._previousElapsed = elapsed;
 
-	this.update(delta);
-	this.render();
+  this.update(delta);
+  this.render();
 }.bind(Game);
 
 // override these methods to create the demo
@@ -131,6 +130,6 @@ Game.render = function () {};
 //
 
 window.onload = function () {
-	var context = document.getElementById("demo").getContext("2d");
-	Game.run(context);
+  var context = document.getElementById("demo").getContext("2d");
+  Game.run(context);
 };
