@@ -9,6 +9,12 @@ body {
   margin: 0rem;
 }
 
+.container {
+  display: grid;
+  align-items: center;
+  height: 100vh;
+}
+
 canvas {
   background: #eee;
   display: block;
@@ -19,7 +25,6 @@ a {
 	color: #2b803e;
 	text-decoration: none;
 	display: block;
-	height: 100%;
 	padding: 1rem;
 }
 
