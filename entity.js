@@ -12,6 +12,7 @@ class Entities {
 
 class Entity {
   constructor(x, y) {
+    this.name = "Unnamed entity";
     if (x !== undefined && y !== undefined)
       this.pos = {
         x: x,
@@ -23,7 +24,6 @@ class Entity {
     this.loaded = false;
     this.doColl = false;
     this.dir = "up";
-    this.name = "Unnamed entity";
     this.throwable = true;
     this.plantable = false;
     this.off = {
