@@ -40,11 +40,12 @@ class Entity {
         return false;
     }
     if (app.map.isFree(newPos.x, newPos.y)) {
-      this.off = {
-        x: newPos.x - this.pos.x,
-        y: newPos.y - this.pos.y,
-        t: 0,
-      };
+      if (this.pos)
+        this.off = {
+          x: newPos.x - this.pos.x,
+          y: newPos.y - this.pos.y,
+          t: 0,
+        };
       return true;
     }
     return false;

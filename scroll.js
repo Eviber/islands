@@ -33,11 +33,14 @@ var app = {
       1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
       1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
     ]],
+    light: [],
     getTile: function (layer, col, row) {
       if (0 <= col && col < this.cols)
         return this.layers[layer][row * app.map.cols + col];
     },
     isFree: function (col, row) {
+      if (col < 0 || col >= this.cols || row < 0 || row >= this.rows)
+        return false;
       return this.layers[1][row * app.map.cols + col] === 0;
     },
   },
@@ -126,6 +129,12 @@ Game.init = function () {
     Keyboard.PLANT,
     Keyboard.INVENTORY,
   ]);
+  for (let i = 0; i < app.map.cols; i++) {
+    app.map.light[i] = [];
+    for (let j = 0; j < app.map.rows; j++) {
+      app.map.light[i][j] = 0;
+    }
+  }
   this.tileAtlas = Loader.getImage("tiles");
   this.camera = new Camera(
     app.map,
@@ -224,4 +233,15 @@ Game.render = function () {
   // draw map top layer
   this._drawLayer(1);
   if (this.player.inventory.visible) this.drawInventory(this.player);
+  // Debug: draw the shadow map
+  for (let i = 0; i < app.map.cols; i++) {
+    for (let j = 0; j < app.map.rows; j++) {
+      let x = i * app.map.tsize - this.camera.x;
+      let y = j * app.map.tsize - this.camera.y;
+      let shadow = app.map.light[i][j];
+      if (shadow === undefined) shadow = 0;
+      app.ctx.fillStyle = `rgba(0,0,0,${shadow/50})`;
+      app.ctx.fillRect(x, y, app.map.tsize, app.map.tsize);
+    }
+  }
 };
