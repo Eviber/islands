@@ -1,6 +1,7 @@
 var app = {
   time: 0,
   entities: new Entities(),
+  tickInterval: 1000,
   map: {
     cols: 24,
     rows: 12,
@@ -108,6 +109,9 @@ Camera.prototype.move = function (delta, dirx, diry) {
 };
 
 Game.load = function () {
+  Loader.loadImage("player", "assets/player.png");
+  Loader.loadImage("seed", "assets/seed.png");
+  Loader.loadImage("tree", "assets/tree.png");
   return [Loader.loadImage("tiles", "assets/tileset.png")];
 };
 
@@ -119,7 +123,7 @@ Game.addTick = function () {
 };
 
 Game.init = function () {
-  window.setInterval(Game.addTick, 1000);
+  window.setInterval(Game.addTick, app.tickInterval);
   Keyboard.listenForEvents([
     Keyboard.LEFT,
     Keyboard.RIGHT,

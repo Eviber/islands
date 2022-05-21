@@ -86,14 +86,7 @@ class Player extends Entity {
 
   // Create the object asset
   create() {
-    this.img = new Image();
-    this.img.src = "assets/player.png";
-    this.img.addEventListener(
-      "load",
-      () => {
-        this.loaded = true;
-      },
-      false
-    );
+    this.img = Loader.getImage("player");
+    this.loaded = true; // TODO: remove this
   }
 }

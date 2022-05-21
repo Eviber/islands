@@ -14,13 +14,21 @@ class Tree extends Entity {
 
   interact(actor) {}
 
+  // add a shadow to the map.light array in a circle around the tree
   addShadow(radius, value) {
     for (let x = this.pos.x - radius; x <= this.pos.x + radius; x++) {
       for (let y = this.pos.y - radius; y <= this.pos.y + radius; y++) {
-        // create light[x][y] if it doesn't exist
-        if (!app.map.light[x]) app.map.light[x] = [];
-        if (!app.map.light[x][y]) app.map.light[x][y] = 0;
-        app.map.light[x][y] += value;
+        // if out of bounds, do nothing
+        if (x < 0 || x >= app.map.light.length || y < 0 || y >= app.map.light[0].length)
+          continue;
+        // check if we are in the circle
+        let a = Math.abs(this.pos.x - x);
+        let b = Math.abs(this.pos.y - y);
+        let c = Math.sqrt(a * a + b * b);
+        if (c <= radius) {
+          // add the shadow
+          app.map.light[x][y] += value;
+        }
       }
     }
   }
@@ -48,6 +56,19 @@ class Tree extends Entity {
     }
   }
 
+  ageUp(time) {
+    // 20 ticks as a sapling
+    // 30 ticks as a tree
+    // 40 ticks as a mature tree
+    // 50 ticks as a dead tree
+    if (time - this.birthTime >= 20 + this.stage * 10) {
+      this.stage++;
+      this.ofx += 32;
+      this.doShadow();
+      this.birthTime = time;
+    }
+  }
+
   tick(time) {
     // if stage is 0 and there is a lot of shadow, there is a chance that the tree will die
     if (this.stage == 0) {
@@ -68,25 +89,14 @@ class Tree extends Entity {
         this.fruits++;
       }
     }
-    if ((time - this.birthTime) % 10 === 0 && time - this.birthTime > 0) {
-      this.stage++;
-      this.ofx += 32;
-      this.doShadow();
-    }
+    this.ageUp(time);
     if (this.stage > 3) {
       app.entities.delete(this);
     }
   }
 
   create() {
-    this.img = new Image();
-    this.img.src = "assets/tree.png";
-    this.img.addEventListener(
-      "load",
-      () => {
-        this.loaded = true;
-      },
-      false
-    );
+    this.img = Loader.getImage("tree");
+    this.loaded = true; // TODO : remove this
   }
 }
