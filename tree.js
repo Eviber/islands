@@ -56,12 +56,26 @@ class Tree extends Entity {
     }
   }
 
+  getShade() {
+    // get the shade level at this.pos minus the shadow of this tree
+    let shade = app.map.light[this.pos.x][this.pos.y];
+    switch (this.stage) {
+      case 1:
+        shade -= 1;
+        break;
+      case 2:
+        shade -= 3;
+        break;
+    }
+    return shade;
+  }
+
   ageUp(time) {
     // 20 ticks as a sapling
     // 30 ticks as a tree
     // 40 ticks as a mature tree
     // 50 ticks as a dead tree
-    if (time - this.birthTime >= 20 + this.stage * 10) {
+    if (time - this.birthTime >= 20 + this.stage * 10 + this.getShade()) {
       this.stage++;
       this.ofx += 32;
       this.doShadow();
