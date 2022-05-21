@@ -74,10 +74,10 @@ class Player extends Entity {
     }
     if (!this.canmove) {
       this.off.t += dt;
-      let newOff = app.map.tsize - app.map.tsize * (this.off.t / 0.2);
+      let newOff = app.map.tsize - app.map.tsize * (this.off.t / 0.1);
       if (this.off.x !== 0) this.off.x = this.off.x > 0 ? newOff : -newOff;
       if (this.off.y !== 0) this.off.y = this.off.y > 0 ? newOff : -newOff;
-      if (this.off.t >= 0.2) {
+      if (this.off.t >= 0.1) {
         this.canmove = true;
         this.off = { x: 0, y: 0, t: 0 };
       }
