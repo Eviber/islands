@@ -53,10 +53,8 @@ class Seed extends Entity {
       this.age++;
       if (this.age > this.maxAge) {
         app.entities.delete(this);
-      } else if (this.age > this.maturity) {
-        if (this.coll(this.pos)) {
+      } else if (this.age > this.maturity && this.coll(this.pos) && !(Game.player.pos.x == this.pos.x && Game.player.pos.y == this.pos.y)) {
           this.plant(this.pos);
-        } else console.log("Seed blocked");
       }
     }
   }
