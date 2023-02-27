@@ -86,7 +86,7 @@ class Player extends Entity {
 
   // Create the object asset
   create() {
-    this.img = new Image();
+    this.img = new Image(); // TODO: load each image once
     this.img.src = "assets/player.png";
     this.img.addEventListener(
       "load",

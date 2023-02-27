@@ -1,0 +1,17 @@
+[package]
+name = "islands"
+version = "0.0.1"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[dependencies]
+anyhow = "1.0.69"
+bevy = "0.9"
+rand = "0.8"
